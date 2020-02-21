@@ -13,6 +13,18 @@ class ParserTest extends TestCase
      */
     public function shouldReturnDocumentWhenCallParse(): void
     {
-        $this->assertInstanceOf(Document::class, (new Parser())->parse());
+        $input = <<<Markdown
+This is a regular paragraph.
+
+This is another regular paragraph.
+Markdown;
+
+        $expected = <<<HTML
+<p>This is a regular paragraph.</p>
+<p>This is another regular paragraph.</p>
+
+HTML;
+
+        $this->assertSame($expected, (new Parser())->parse($input)->html());
     }
 }
