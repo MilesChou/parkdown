@@ -9,7 +9,7 @@ use MilesChou\Parkdown\Block\BlockInterface;
 class Document
 {
     /**
-     * @var array
+     * @var array<BlockInterface>
      */
     private $block = [];
 
