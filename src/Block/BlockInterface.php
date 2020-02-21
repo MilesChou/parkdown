@@ -4,5 +4,5 @@ namespace MilesChou\Parkdown\Block;
 
 interface BlockInterface
 {
-    public function build(): string;
+    public function html(): string;
 }

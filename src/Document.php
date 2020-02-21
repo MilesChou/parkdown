@@ -21,7 +21,7 @@ class Document
     public function html(): string
     {
         return array_reduce($this->block, static function ($c, BlockInterface $block) {
-            return $c . $block->build() . PHP_EOL;
+            return $c . $block->html() . PHP_EOL;
         }, '');
     }
 }

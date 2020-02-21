@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Container\Container;
 use MilesChou\Parkdown\Document;
 use MilesChou\Parkdown\Parser;
 use PHPUnit\Framework\TestCase;
@@ -25,6 +26,6 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser())->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
     }
 }

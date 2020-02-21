@@ -14,7 +14,7 @@ class ParagraphBlock implements BlockInterface
         $this->line = $line;
     }
 
-    public function build(): string
+    public function html(): string
     {
         return "<p>{$this->line}</p>";
     }

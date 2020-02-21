@@ -4,11 +4,32 @@ declare(strict_types=1);
 
 namespace MilesChou\Parkdown;
 
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Pipeline\Pipeline;
 use MilesChou\Parkdown\Block\BlockInterface;
-use MilesChou\Parkdown\Block\ParagraphBlock;
+use MilesChou\Parkdown\ParserChains\NullChain;
+use MilesChou\Parkdown\ParserChains\ParagraphChain;
 
 class Parser
 {
+    /**
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * @var array<string>
+     */
+    private $chains = [
+        ParagraphChain::class,
+        NullChain::class,
+    ];
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
     public function parse(string $content): Document
     {
         $doc = new Document();
@@ -16,7 +37,12 @@ class Parser
         $lines = $this->lines($content);
 
         foreach ($lines as $line) {
-            if ($block = $this->blockChain($line)) {
+            /** @var BlockInterface|null $block */
+            $block = (new Pipeline($this->container))->send($line)
+                ->through($this->chains)
+                ->thenReturn();
+
+            if ($block) {
                 $doc->appendBlock($block);
             }
         }
@@ -33,18 +59,5 @@ class Parser
         $content = str_replace("\r\n", "\n", $content);
 
         return explode("\n", $content);
-    }
-
-    /**
-     * @param string $line
-     * @return BlockInterface|null
-     */
-    private function blockChain(string $line): ?BlockInterface
-    {
-        if (!empty(trim($line))) {
-            return new ParagraphBlock($line);
-        }
-
-        return null;
     }
 }
