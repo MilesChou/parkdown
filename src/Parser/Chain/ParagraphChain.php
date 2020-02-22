@@ -1,18 +1,21 @@
 <?php
 
-namespace MilesChou\Parkdown\ParserChains;
+namespace MilesChou\Parkdown\Parser\Chain;
 
 use MilesChou\Parkdown\Block\BlockInterface;
 use MilesChou\Parkdown\Block\ParagraphBlock;
+use MilesChou\Parkdown\Parser\Context;
 
 class ParagraphChain implements ChainInterface
 {
-    public function handle(string $line, callable $next): ?BlockInterface
+    public function handle(Context $context, callable $next): ?BlockInterface
     {
+        $line = $context->current();
+
         if (!empty(trim($line))) {
             return new ParagraphBlock($line);
         }
 
-        return $next($line);
+        return $next($context);
     }
 }

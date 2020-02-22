@@ -7,8 +7,9 @@ namespace MilesChou\Parkdown;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Pipeline\Pipeline;
 use MilesChou\Parkdown\Block\BlockInterface;
-use MilesChou\Parkdown\ParserChains\NullChain;
-use MilesChou\Parkdown\ParserChains\ParagraphChain;
+use MilesChou\Parkdown\Parser\Chain\NullChain;
+use MilesChou\Parkdown\Parser\Chain\ParagraphChain;
+use MilesChou\Parkdown\Parser\Context;
 
 class Parser
 {
@@ -34,30 +35,21 @@ class Parser
     {
         $doc = new Document();
 
-        $lines = $this->lines($content);
+        $context = new Context($content);
 
-        foreach ($lines as $line) {
+        while ($context->valid()) {
             /** @var BlockInterface|null $block */
-            $block = (new Pipeline($this->container))->send($line)
+            $block = (new Pipeline($this->container))->send($context->clone())
                 ->through($this->chains)
                 ->thenReturn();
 
             if ($block) {
                 $doc->appendBlock($block);
             }
+
+            $context->next();
         }
 
         return $doc;
-    }
-
-    /**
-     * @param string $content
-     * @return iterable<string>
-     */
-    private function lines(string $content): iterable
-    {
-        $content = str_replace("\r\n", "\n", $content);
-
-        return explode("\n", $content);
     }
 }
