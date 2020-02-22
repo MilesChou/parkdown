@@ -36,7 +36,7 @@ class CodeBlock implements BlockInterface
         }
     }
 
-    public function html(): string
+    public function render(): string
     {
         return "<pre><code>{$this->code}</code></pre>";
     }

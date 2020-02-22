@@ -32,7 +32,7 @@ class QuoteBlock implements BlockInterface
         }
     }
 
-    public function html(): string
+    public function render(): string
     {
         return "<blockquote>{$this->quote}</blockquote>";
     }

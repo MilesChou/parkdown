@@ -25,7 +25,7 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 
     /**
@@ -46,7 +46,7 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 
     /**
@@ -71,7 +71,7 @@ end tell
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 
     /**
@@ -96,7 +96,7 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 
     /**
@@ -122,7 +122,7 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 
     /**
@@ -140,6 +140,6 @@ Markdown;
 
 HTML;
 
-        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->html());
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
 }

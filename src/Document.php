@@ -18,10 +18,10 @@ class Document
         $this->block[] = $block;
     }
 
-    public function html(): string
+    public function render(): string
     {
         return array_reduce($this->block, static function ($c, BlockInterface $block) {
-            return $c . $block->html() . PHP_EOL;
+            return $c . $block->render() . PHP_EOL;
         }, '');
     }
 }
