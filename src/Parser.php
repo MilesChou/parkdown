@@ -10,6 +10,7 @@ use MilesChou\Parkdown\Block\BlockInterface;
 use MilesChou\Parkdown\Parser\Chain\CodeChain;
 use MilesChou\Parkdown\Parser\Chain\NullChain;
 use MilesChou\Parkdown\Parser\Chain\ParagraphChain;
+use MilesChou\Parkdown\Parser\Chain\QuoteChain;
 use MilesChou\Parkdown\Parser\Context;
 
 class Parser
@@ -23,6 +24,7 @@ class Parser
      * @var array<string>
      */
     private $chains = [
+        QuoteChain::class,
         CodeChain::class,
         ParagraphChain::class,
         NullChain::class,
