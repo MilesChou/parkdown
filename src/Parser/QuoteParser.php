@@ -1,18 +1,20 @@
 <?php
 
-namespace MilesChou\Parkdown\Parser\Chain;
+declare(strict_types=1);
 
-use MilesChou\Parkdown\Block\BlockInterface;
-use MilesChou\Parkdown\Block\CodeBlock;
-use MilesChou\Parkdown\Block\QuoteBlock;
-use MilesChou\Parkdown\Parser\Context;
+namespace MilesChou\Parkdown\Parser;
+
+use MilesChou\Parkdown\Block\Quote;
+use MilesChou\Parkdown\Context;
+use MilesChou\Parkdown\Contracts\Block;
+use MilesChou\Parkdown\Contracts\Parser;
 
 /**
  * @see https://daringfireball.net/projects/markdown/syntax#precode
  */
-class QuoteChain implements ChainInterface
+class QuoteParser implements Parser
 {
-    public function handle(Context $context, callable $next): ?BlockInterface
+    public function handle(Context $context, callable $next): ?Block
     {
         $line = $context->current();
 
@@ -28,9 +30,9 @@ class QuoteChain implements ChainInterface
         return strpos($line, '> ') === 0 || strpos($line, '>') === 0;
     }
 
-    protected function buildBlock(Context $context): BlockInterface
+    protected function buildBlock(Context $context): Block
     {
-        $block = new QuoteBlock();
+        $block = new Quote();
 
         while ($context->valid()) {
             $line = $context->current();

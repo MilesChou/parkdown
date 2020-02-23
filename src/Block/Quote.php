@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MilesChou\Parkdown\Block;
 
 use Illuminate\Container\Container;
+use MilesChou\Parkdown\Contracts\Block;
 use MilesChou\Parkdown\Parser;
 
-class QuoteBlock implements BlockInterface
+class Quote implements Block
 {
     /**
      * @var string

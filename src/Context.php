@@ -1,6 +1,8 @@
 <?php
 
-namespace MilesChou\Parkdown\Parser;
+declare(strict_types=1);
+
+namespace MilesChou\Parkdown;
 
 use Iterator;
 

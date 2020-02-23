@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MilesChou\Parkdown\Block;
 
-class ParagraphBlock implements BlockInterface
+use MilesChou\Parkdown\Contracts\Block;
+
+class Paragraph implements Block
 {
     /**
      * @var string

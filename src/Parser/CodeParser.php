@@ -1,17 +1,20 @@
 <?php
 
-namespace MilesChou\Parkdown\Parser\Chain;
+declare(strict_types=1);
 
-use MilesChou\Parkdown\Block\BlockInterface;
-use MilesChou\Parkdown\Block\CodeBlock;
-use MilesChou\Parkdown\Parser\Context;
+namespace MilesChou\Parkdown\Parser;
+
+use MilesChou\Parkdown\Block\Code;
+use MilesChou\Parkdown\Context;
+use MilesChou\Parkdown\Contracts\Block;
+use MilesChou\Parkdown\Contracts\Parser;
 
 /**
  * @see https://daringfireball.net/projects/markdown/syntax#precode
  */
-class CodeChain implements ChainInterface
+class CodeParser implements Parser
 {
-    public function handle(Context $context, callable $next): ?BlockInterface
+    public function handle(Context $context, callable $next): ?Block
     {
         $line = $context->current();
 
@@ -28,9 +31,9 @@ class CodeChain implements ChainInterface
         return strpos($line, '    ') === 0 || strpos($line, "\t") === 0;
     }
 
-    protected function buildBlock(Context $context): BlockInterface
+    protected function buildBlock(Context $context): Block
     {
-        $block = new CodeBlock();
+        $block = new Code();
 
         while ($context->valid()) {
             $line = $context->current();

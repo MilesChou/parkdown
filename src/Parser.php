@@ -6,12 +6,12 @@ namespace MilesChou\Parkdown;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Pipeline\Pipeline;
-use MilesChou\Parkdown\Block\BlockInterface;
-use MilesChou\Parkdown\Parser\Chain\CodeChain;
-use MilesChou\Parkdown\Parser\Chain\NullChain;
-use MilesChou\Parkdown\Parser\Chain\ParagraphChain;
-use MilesChou\Parkdown\Parser\Chain\QuoteChain;
-use MilesChou\Parkdown\Parser\Context;
+use MilesChou\Parkdown\Block\Document;
+use MilesChou\Parkdown\Contracts\Block;
+use MilesChou\Parkdown\Parser\CodeParser;
+use MilesChou\Parkdown\Parser\NullParser;
+use MilesChou\Parkdown\Parser\ParagraphParser;
+use MilesChou\Parkdown\Parser\QuoteParser;
 
 class Parser
 {
@@ -24,10 +24,10 @@ class Parser
      * @var array<string>
      */
     private $chains = [
-        QuoteChain::class,
-        CodeChain::class,
-        ParagraphChain::class,
-        NullChain::class,
+        QuoteParser::class,
+        CodeParser::class,
+        ParagraphParser::class,
+        NullParser::class,
     ];
 
     public function __construct(Container $container)
@@ -42,7 +42,7 @@ class Parser
         $context = new Context($content);
 
         while ($context->valid()) {
-            /** @var BlockInterface|null $block */
+            /** @var Block|null $block */
             $block = (new Pipeline($this->container))->send($context)
                 ->through($this->chains)
                 ->thenReturn();
