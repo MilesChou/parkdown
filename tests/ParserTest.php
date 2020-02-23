@@ -142,4 +142,26 @@ HTML;
 
         $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
     }
+
+    /**
+     * @test
+     */
+    public function shouldBeOkayWhenMoreLineSimpleBlockquote(): void
+    {
+        $input = <<<Markdown
+> This is a normal paragraph.
+>
+> This is a normal paragraph.
+Markdown;
+
+        $expected = <<<HTML
+<blockquote>This is a normal paragraph.
+
+This is a normal paragraph.
+</blockquote>
+
+HTML;
+
+        $this->assertSame($expected, (new Parser(new Container()))->parse($input)->render());
+    }
 }

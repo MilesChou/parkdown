@@ -25,8 +25,7 @@ class QuoteChain implements ChainInterface
 
     private function isQuoteBlock(string $line): bool
     {
-        // indent every line of the block by at least 4 spaces or 1 tab
-        return strpos($line, '> ') === 0;
+        return strpos($line, '> ') === 0 || strpos($line, '>') === 0;
     }
 
     protected function buildBlock(Context $context): BlockInterface
