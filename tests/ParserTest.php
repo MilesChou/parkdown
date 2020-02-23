@@ -135,7 +135,7 @@ HTML;
 Markdown;
 
         $expected = <<<HTML
-<blockquote>This is a normal paragraph.
+<blockquote><p>This is a normal paragraph.</p>
 </blockquote>
 
 HTML;
@@ -155,9 +155,8 @@ HTML;
 Markdown;
 
         $expected = <<<HTML
-<blockquote>This is a normal paragraph.
-
-This is a normal paragraph.
+<blockquote><p>This is a normal paragraph.</p>
+<p>This is a normal paragraph.</p>
 </blockquote>
 
 HTML;

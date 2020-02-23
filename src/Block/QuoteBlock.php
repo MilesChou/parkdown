@@ -2,6 +2,9 @@
 
 namespace MilesChou\Parkdown\Block;
 
+use Illuminate\Container\Container;
+use MilesChou\Parkdown\Parser;
+
 class QuoteBlock implements BlockInterface
 {
     /**
@@ -34,6 +37,8 @@ class QuoteBlock implements BlockInterface
 
     public function render(): string
     {
-        return "<blockquote>{$this->quote}</blockquote>";
+        $quote = (new Parser(new Container()))->parse($this->quote)->render();
+
+        return "<blockquote>{$quote}</blockquote>";
     }
 }
