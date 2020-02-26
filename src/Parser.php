@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace MilesChou\Parkdown;
 
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Pipeline\Pipeline;
-use MilesChou\Parkdown\Block\Document;
-use MilesChou\Parkdown\Contracts\Block;
-use MilesChou\Parkdown\Parser\CodeParser;
-use MilesChou\Parkdown\Parser\NullParser;
-use MilesChou\Parkdown\Parser\ParagraphParser;
-use MilesChou\Parkdown\Parser\QuoteParser;
+use MilesChou\Parkdown\Contracts\MarkdownParser;
+use MilesChou\Parkdown\Contracts\YamlParser;
 
 class Parser
 {
@@ -21,39 +16,55 @@ class Parser
     private $container;
 
     /**
-     * @var array<string>
+     * @var YamlParser
      */
-    private $chains = [
-        QuoteParser::class,
-        CodeParser::class,
-        ParagraphParser::class,
-        NullParser::class,
-    ];
+    private $yamlParser;
 
+    /**
+     * @var MarkdownParser
+     */
+    private $markdownParser;
+
+    /**
+     * @var string
+     */
+    private $div = '---';
+
+    /**
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->yamlParser = $container->make(YamlParser::class);
+        $this->markdownParser = $container->make(MarkdownParser::class);
     }
 
+    /**
+     * @param string $div
+     */
+    public function setDiv(string $div): void
+    {
+        $this->div = $div;
+    }
+
+    /**
+     * @param string $content
+     * @return Document
+     */
     public function parse(string $content): Document
     {
-        $doc = new Document();
+        $div = preg_quote($this->div, '~');
 
-        $context = new Context($content);
+        $regex = '~^(' . $div . "){1}[\r\n|\n]*(.*?)[\r\n|\n]+(" . $div . "){1}[\r\n|\n]*(.*)$~s";
 
-        while ($context->valid()) {
-            /** @var Block|null $block */
-            $block = (new Pipeline($this->container))->send($context)
-                ->through($this->chains)
-                ->thenReturn();
-
-            if ($block) {
-                $doc->appendBlock($block);
-            }
-
-            $context->next();
+        if (preg_match($regex, $content, $matches) === 1) {
+            $yaml = trim($matches[2]);
+            $markdown = ltrim($matches[4]);
         }
 
-        return $doc;
+        return (new Document())
+            ->withFrontMatter($this->yamlParser->parse($yaml ?? ''))
+            ->withHtml($this->markdownParser->parse($markdown ?? ''));
     }
 }
