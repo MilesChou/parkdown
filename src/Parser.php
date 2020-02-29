@@ -56,26 +56,11 @@ class Parser
      */
     public function parse(string $content): Document
     {
-        $div = preg_quote($this->div, '~');
-
-        $regex = '~^' .
-            '(' . $div . '){1}' .       // $matches[1] match `---`
-            "[\r\n|\n]*" .
-            '(.*?)' .                   // $matches[2] match YAML content
-            "[\r\n|\n]+" .
-            '(' . $div . '){1}' .       // $matches[3] match `---`
-            "[\r\n|\n]*" .
-            '(.*)' .                    // $matches[4] match Markdown content
-            '$~s';
-
-        if (preg_match($regex, $content, $matches) === 1) {
-            $yaml = trim($matches[2]);
-            $markdown = ltrim($matches[4]);
-        }
+        $splitter = new Splitter($content);
 
         return (new Document())
-            ->withFrontMatter($this->yamlParser->parse($yaml ?? ''))
-            ->withHtml($this->markdownParser->parse($markdown ?? ''));
+            ->withFrontMatter($this->yamlParser->parse($splitter->getYaml() ?? ''))
+            ->withHtml($this->markdownParser->parse($splitter->getMarkdown() ?? ''));
     }
 
     /**
