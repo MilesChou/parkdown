@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace MilesChou\Parkdown;
 
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Filesystem\Filesystem;
 use MilesChou\Parkdown\Contracts\MarkdownParser;
 use MilesChou\Parkdown\Contracts\YamlParser;
 
 class Parser
 {
-    /**
-     * @var Container
-     */
-    private $container;
-
     /**
      * @var YamlParser
      */
@@ -31,13 +26,20 @@ class Parser
     private $div = '---';
 
     /**
-     * @param Container $container
+     * @var Filesystem
      */
-    public function __construct(Container $container)
+    private $file;
+
+    /**
+     * @param YamlParser $yamlParser
+     * @param MarkdownParser $markdownParser
+     * @param Filesystem $file
+     */
+    public function __construct(YamlParser $yamlParser, MarkdownParser $markdownParser, Filesystem $file)
     {
-        $this->container = $container;
-        $this->yamlParser = $container->make(YamlParser::class);
-        $this->markdownParser = $container->make(MarkdownParser::class);
+        $this->yamlParser = $yamlParser;
+        $this->markdownParser = $markdownParser;
+        $this->file = $file;
     }
 
     /**
@@ -74,5 +76,14 @@ class Parser
         return (new Document())
             ->withFrontMatter($this->yamlParser->parse($yaml ?? ''))
             ->withHtml($this->markdownParser->parse($markdown ?? ''));
+    }
+
+    /**
+     * @param string $path
+     * @return Document
+     */
+    public function parseFile(string $path): Document
+    {
+        return $this->parse($this->file->get($path));
     }
 }

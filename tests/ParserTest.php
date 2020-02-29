@@ -53,7 +53,7 @@ Markdown;
 <p>This is another regular paragraph.</p>
 HTML;
 
-        $actual = (new Parser($this->container))->parse($input);
+        $actual = $this->container->make(Parser::class)->parse($input);
 
         $this->assertSame(['foo' => 'bar'], $actual->frontMatter());
         $this->assertSame($expected, $actual->html());

@@ -16,6 +16,7 @@
     "require": {
         "php": ">=7.2",
         "illuminate/container": "^6",
+        "illuminate/filesystem": "^6",
         "illuminate/pipeline": "^6"
     },
     "require-dev": {

@@ -40,7 +40,7 @@ class Quote implements Block
 
     public function render(): string
     {
-        $quote = (new Parser(new Container()))->parse($this->quote)->html();
+        $quote = (new Container())->make(Parser::class)->parse($this->quote)->html();
 
         return "<blockquote>{$quote}</blockquote>";
     }
