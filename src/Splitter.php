@@ -41,7 +41,7 @@ class Splitter
     /**
      * @return string
      */
-    public function getMarkdown(): string
+    public function getMarkdown(): ?string
     {
         return $this->markdown;
     }
@@ -49,7 +49,7 @@ class Splitter
     /**
      * @return string
      */
-    public function getYaml(): string
+    public function getYaml(): ?string
     {
         return $this->yaml;
     }

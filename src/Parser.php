@@ -21,11 +21,6 @@ class Parser
     private $markdownParser;
 
     /**
-     * @var string
-     */
-    private $div = '---';
-
-    /**
      * @var Filesystem
      */
     private $file;
@@ -43,14 +38,6 @@ class Parser
     }
 
     /**
-     * @param string $div
-     */
-    public function setDiv(string $div): void
-    {
-        $this->div = $div;
-    }
-
-    /**
      * @param string $content
      * @return Document
      */
@@ -58,9 +45,19 @@ class Parser
     {
         $splitter = new Splitter($content);
 
-        return (new Document())
-            ->withFrontMatter($this->yamlParser->parse($splitter->getYaml() ?? ''))
-            ->withHtml($this->markdownParser->parse($splitter->getMarkdown() ?? ''));
+        $document = new Document();
+
+        if ($splitter->hasYaml()) {
+            $yaml = (string)$splitter->getYaml();
+            $document = $document->withFrontMatter($this->yamlParser->parse($yaml));
+        }
+
+        if ($splitter->hasMarkdown()) {
+            $markdown = (string)$splitter->getMarkdown();
+            $document = $document->withHtml($this->markdownParser->parse($markdown));
+        }
+
+        return $document;
     }
 
     /**
