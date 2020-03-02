@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MilesChou\Parkdown;
 
 class Splitter
@@ -20,6 +22,14 @@ class Splitter
      */
     public function __construct(string $content, string $div = '---')
     {
+        $content = trim($content);
+
+        // Start not with '---'
+        if (strpos($content, $div, 0) !== 0) {
+            $this->markdown = $content;
+            return;
+        }
+
         $div = preg_quote($div, '~');
 
         $regex = '~^' .
