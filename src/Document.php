@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MilesChou\Parkdown;
 
+/**
+ * Container with parsed result
+ */
 class Document
 {
     /**
      * @var array<mixed>
      */
-    private $frontMatter;
+    private $frontMatter = [];
 
     /**
      * @var string
      */
-    private $html;
+    private $html = '';
 
     /**
-     * @return array<mixed>|null
+     * @return array<mixed>
      */
-    public function frontMatter(): ?array
+    public function frontMatter(): array
     {
         return $this->frontMatter;
     }
@@ -28,10 +33,10 @@ class Document
     }
 
     /**
-     * @param mixed $frontMatter
+     * @param array<mixed> $frontMatter
      * @return Document
      */
-    public function withFrontMatter($frontMatter): Document
+    public function withFrontMatter(array $frontMatter): Document
     {
         $this->frontMatter = $frontMatter;
         return $this;
