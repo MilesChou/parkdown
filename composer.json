@@ -15,9 +15,9 @@
     ],
     "require": {
         "php": ">=7.2",
-        "illuminate/container": "^6",
-        "illuminate/filesystem": "^6",
-        "illuminate/pipeline": "^6"
+        "illuminate/container": "^6 | ^7",
+        "illuminate/filesystem": "^6 | ^7",
+        "illuminate/pipeline": "^6 | ^7"
     },
     "require-dev": {
         "erusev/parsedown": "^1.7",
